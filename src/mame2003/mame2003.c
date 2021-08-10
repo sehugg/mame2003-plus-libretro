@@ -201,13 +201,16 @@ void retro_get_system_info(struct retro_system_info *info)
   info->block_extract = true;
 }
 
+static void log_null(enum retro_log_level level, const char *fmt, ...) {
+}
+
 void retro_init (void)
 {
   struct retro_log_callback log;
   if (environ_cb(RETRO_ENVIRONMENT_GET_LOG_INTERFACE, &log))
     log_cb = log.log;
   else
-    log_cb = NULL;
+    log_cb = log_null;
 
 #ifdef LOG_PERFORMANCE
   environ_cb(RETRO_ENVIRONMENT_GET_PERF_INTERFACE, &perf_cb);

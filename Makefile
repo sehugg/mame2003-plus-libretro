@@ -94,8 +94,20 @@ ifneq (,$(findstring msvc,$(platform)))
 	system_platform = win
 endif
 
+# WASM
+ifeq ($(platform), wasm)
+	CC = $(WASI_SDK_PATH)/bin/clang --sysroot=$(WASI_SDK_PATH)/share/wasi-sysroot -D__WASI__
+	LD = $(WASI_SDK_PATH)/bin/wasm-ld
+	TARGET = $(TARGET_NAME)_libretro.wasm
+	CFLAGS += $(fpic) 
+	LDFLAGS += $(fpic) wasm/wasm_main.c -O2 -flto -Wl,--no-entry -Wl,--export-dynamic -Wl,--lto-O2 \
+		-I./src/libretro-common/include/ \
+		-Wl,--allow-undefined \
+		-Wl,--export=malloc \
+		-Wl,--export=free
+
 # Unix
-ifeq ($(platform), unix)
+else ifeq ($(platform), unix)
 	TARGET = $(TARGET_NAME)_libretro.so
 	fpic = -fPIC
 	CFLAGS += $(fpic)
