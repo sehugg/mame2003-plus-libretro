@@ -100,7 +100,7 @@ ifeq ($(platform), wasm)
 	LD = $(WASI_SDK_PATH)/bin/wasm-ld
 	TARGET = $(TARGET_NAME)_libretro.wasm
 	CFLAGS += $(fpic) 
-	LDFLAGS += $(fpic) wasm/wasm_main.c -O2 -flto -Wl,--no-entry -Wl,--export-dynamic -Wl,--lto-O2 \
+	LDFLAGS += $(fpic) wasm/wasm_main.c -g -O2 -flto -Wl,--no-entry -Wl,--export-dynamic -Wl,--lto-O2 \
 		-I./src/libretro-common/include/ \
 		-Wl,--allow-undefined \
 		-Wl,--export=malloc \
